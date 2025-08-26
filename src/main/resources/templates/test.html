@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>DB 테스트</title>
+</head>
+<body>
+<h1>DB 테스트 페이지</h1>
+
+<ul>
+    <li th:each="u : ${user}">
+        <span th:text="${u.name}"></span>
+        <span th:text="${u.age}"></span>
+    </li>
+</ul>
+
+</body>
+</html>
