@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<body>
+<header th:fragment="header">
+    <div class="header-left">
+        <div class="logo">
+            <a href="/main" style="text-decoration: none; color: inherit;">
+                <span class="k">K</span><span class="l">L</span>TOY
+            </a>
+        </div>
+        <nav>
+            <ul>
+                <li><a th:href="@{/employee/list}">직원목록</a></li>
+                <li><a th:href="@{/employee/list}">업무일지</a></li>
+                <li><a th:href="@{/employee/list}">휴가관리</a></li>
+                <li><a th:href="@{/employee/list}">건의사항</a></li>
+                <li><a th:href="@{/employee/list}">사내채팅</a></li>
+            </ul>
+        </nav>
+    </div>
+    <button class="logout-btn">로그아웃</button>
+</header>
+</body>
+</html>

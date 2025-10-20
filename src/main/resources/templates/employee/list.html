@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{main/mainLayout :: layout(~{::title}, ~{::div}, ~{::#list-css}, ~{})}">
+<head>
+    <meta charset="UTF-8">
+    <title>직원 목록</title>
+    <link rel="stylesheet" th:href="@{/css/list.css}" id="list-css">
+</head>
+<body>
+<div>
+    <h1>전체 직원 목록</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>사원번호</th>
+            <th>이름</th>
+            <th>부서</th>
+            <th>직책</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${employees.isEmpty()}">
+            <td colspan="4" style="text-align: center;">등록된 직원이 없습니다.</td>
+        </tr>
+        <tr th:each="employee : ${employees}"
+            th:attr="data-id=${employee.id}"
+            class="employee-row"
+            title="상세 정보">
+
+            <td th:text="${employee.empNo}"></td>
+            <td th:text="${employee.name}"></td>
+            <td th:text="${employee.department}"></td>
+            <td th:text="${employee.position}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
