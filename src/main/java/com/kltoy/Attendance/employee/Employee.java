@@ -1,10 +1,7 @@
 package com.kltoy.Attendance.employee;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
@@ -30,9 +27,11 @@ public class Employee {
     @Column(nullable = false, length = 100)
     private String password;
 
+    @Setter
     @Column(unique = true, nullable = false, length = 100)
     private String email;
 
+    @Setter
     @Column(name = "phone", nullable = false, length = 20)
     private String phone;
 
@@ -45,12 +44,14 @@ public class Employee {
     @Column(name = "hire_date", nullable = false)
     private LocalDate hireDate;
 
+    @Setter
     @Column(name = "resign_date")
     private LocalDate resignDate;
 
     @Column(name = "work_days", nullable = false)
     private Integer workDays;
 
+    @Setter
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private EmployeeStatus status;

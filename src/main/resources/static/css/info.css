@@ -1,0 +1,94 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 450px;
+    position: relative;
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+.modal-close-btn:hover {
+    color: #333;
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 12px;
+}
+
+.info-label {
+    font-weight: bold;
+    color: #555;
+}
+
+/* 수정 */
+.edit-mode {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.modal-buttons {
+    margin-top: 25px;
+    text-align: right;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+
+.modal-buttons button {
+    padding: 8px 15px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#edit-btn, #cancel-btn {
+    background-color: #6c757d;
+    color: white;
+}
+#edit-btn:hover, #cancel-btn:hover {
+    background-color: #5a6268;
+}
+
+#save-btn {
+    background-color: #007bff;
+    color: white;
+}
+#save-btn:hover {
+    background-color: #0056b3;
+}

@@ -1,6 +1,7 @@
 package com.kltoy.Attendance.employee;
 
 import com.kltoy.Attendance.employee.dto.EmployeeJoinRequestDto;
+import com.kltoy.Attendance.employee.dto.EmployeeUpdateRequestDto;
 import com.kltoy.Attendance.login.dto.LoginRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,26 @@ public class EmployeeService {
                 .build();
 
         employeeRepository.save(employee);
+    }
+
+    @Transactional
+    public Employee update(Long id, EmployeeUpdateRequestDto dto) {
+        // DB에서 기존 직원 정보 조회
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 직원을 찾을 수 없습니다. id=" + id));
+
+        // DTO로부터 받은 정보로 직원 객체의 필드를 업데이트
+        employee.updateProfile(dto.getDepartment(), dto.getPosition());
+        employee.setEmail(dto.getEmail());
+        employee.setPhone(dto.getPhone());
+        employee.setStatus(dto.getStatus());
+
+        // 퇴사할 시 퇴사일 수정
+        if (dto.getStatus() == Employee.EmployeeStatus.RESIGNED && employee.getResignDate() == null) {
+            employee.setResignDate(LocalDate.now());
+        }
+
+        return employee;
     }
 
     public String createEmpNo() {

@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title th:replace="${title}">KLTOY 근태관리</title>
-  <link rel="stylesheet" th:href="@{/css/layout.css}"> <th:block th:replace="${css}"></th:block>
+  <link rel="stylesheet" th:href="@{/css/layout.css}">
+  <link rel="stylesheet" th:href="@{/css/info.css}"> <th:block th:replace="${css}"></th:block>
 </head>
 <body>
 <header th:replace="~{main/header :: header}"></header>
@@ -15,6 +16,8 @@
 </main>
 
 <footer th:replace="~{main/footer :: footer}"></footer>
+
+<div th:replace="~{employee/info :: modal}"></div>
 
 <th:block th:replace="${js}"></th:block>
 <script th:src="@{/js/layout.js}"></script>
