@@ -14,7 +14,6 @@
     </div>
 
     <form th:action="@{/login/login}" method="post">
-        <div th:if="${loginError}" class="error-message" th:text="${loginError}"></div>
         <div class="form-wrapper">
             <div class="input-group">
                 <input type="text" name="empNo" placeholder="사원번호" required>
@@ -27,6 +26,13 @@
         </div>
     </form>
 </div>
+
+<script th:if="${loginError}" th:inline="javascript">
+    // HTML 파일을 브라우저에서 (서버 없이) 열었을 때 JavaScript 오류가 나는 것을 방지
+    /*[+
+        alert([[${loginError}]]);
+    +]*/
+</script>
 
 </body>
 </html>

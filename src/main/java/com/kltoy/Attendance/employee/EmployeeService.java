@@ -26,7 +26,7 @@ public class EmployeeService {
                 .empNo(newEmpNo)
                 .name(dto.getName())
                 .email(dto.getEmail())
-                .password(dto.getPassword())    //TODO 암호화 필요
+                .password(dto.getPassword())
                 .phone(dto.getPhone())
                 .department(dto.getDepartment())
                 .position(dto.getPosition())
