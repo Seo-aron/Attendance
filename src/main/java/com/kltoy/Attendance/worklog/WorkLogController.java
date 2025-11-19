@@ -28,7 +28,7 @@ public class WorkLogController {
             return "redirect:/login/login";
         }
 
-        model.addAttribute("workLog", workLogs);
+        model.addAttribute("workLogs", workLogs);
 
         return "worklog/list";
     }

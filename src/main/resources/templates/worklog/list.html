@@ -1,10 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{main/mainLayout :: layout(~{::title}, ~{::div}, ~{::#worklog-css}, ~{})}">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8">
+  <title>업무일지</title>
+  <link rel="stylesheet" th:href="@{/css/worklog.css}" id="worklog-css">
 </head>
 <body>
+<div class="worklog-container">
+  <h1>나의 업무일지</h1>
 
+  <table>
+    <thead>
+    <tr>
+      <th style="width: 10%;">번호</th> <th style="width: 15%;">근무일자</th>
+      <th style="width: 45%;">업무내용</th>
+      <th style="width: 15%;">결재상태</th>
+      <th style="width: 15%;">결재자</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${workLogs.isEmpty()}">
+      <td colspan="5" style="text-align: center; padding: 30px;">작성된 업무일지가 없습니다.</td>
+    </tr>
+
+    <tr th:each="log : ${workLogs}">
+      <td th:text="${log.id}"></td>
+      <td th:text="${log.workDate}"></td>
+
+      <td class="content-cell" th:text="${log.content}"></td>
+
+      <td th:switch="${log.approvalStatus.name()}">
+        <span th:case="'PENDING'" class="status-badge status-pending">대기중</span>
+        <span th:case="'APPROVED'" class="status-badge status-approved">승인</span>
+        <span th:case="'REJECTED'" class="status-badge status-rejected">반려</span>
+      </td>
+
+      <td th:text="${log.approver != null ? log.approver.name : '-'}"></td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div class="write-btn-container">
+    <a th:href="@{/worklog/new}" class="write-btn">✏️ 업무일지 작성</a>
+  </div>
+</div>
 </body>
 </html>
