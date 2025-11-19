@@ -4,6 +4,8 @@ import com.kltoy.Attendance.employee.Employee;
 import com.kltoy.Attendance.employee.EmployeeService;
 import com.kltoy.Attendance.employee.dto.EmployeeJoinRequestDto;
 import com.kltoy.Attendance.login.dto.LoginRequestDto;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -26,7 +28,8 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String loginProcess(@Valid LoginRequestDto dto, BindingResult bindingResult, Model model) {
+    public String loginProcess(@Valid LoginRequestDto dto, BindingResult bindingResult, Model model,
+                               HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return "login/login";
         }
@@ -38,9 +41,17 @@ public class LoginController {
             return "login/login";
         }
 
+        HttpSession session = request.getSession();
+        session.setAttribute("loginSession", loginEmployee.getId());
+
         return "redirect:/employee/list";
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();   // 세션 안전하게 파괴
+        return "redirect:/login/login";
+    }
 
     @GetMapping("/join")
     public String employeeJoin(Model model) {

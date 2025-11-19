@@ -10,13 +10,4 @@ document.addEventListener("DOMContentLoaded", function() {
             link.classList.add("active");
         }
     });
-
-    // logout
-    const logoutBtn = document.getElementById("simple-logout-btn");
-
-    if (logoutBtn) {
-        logoutBtn.addEventListener("click", () => {
-            window.location.href = '/login/login';
-        });
-    }
 });
