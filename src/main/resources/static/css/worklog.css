@@ -91,3 +91,81 @@ tbody tr:hover {
     background-color: #0056b3;
     transform: translateY(-2px); /* 살짝 떠오르는 효과 */
 }
+
+/* --- 폼 스타일 (추가됨) --- */
+.worklog-form {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+}
+
+.form-group input[type="date"],
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box; /* padding 포함 크기 계산 */
+}
+
+.form-group textarea {
+    resize: vertical; /* 세로 크기 조절만 허용 */
+    min-height: 150px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+}
+
+.btn-group {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.submit-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.submit-btn:hover {
+    background-color: #218838;
+}
+
+.cancel-btn {
+    background-color: #6c757d;
+    color: white;
+    text-decoration: none;
+    padding: 12px 30px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    display: inline-block;
+    transition: background-color 0.2s;
+}
+
+.cancel-btn:hover {
+    background-color: #5a6268;
+}
