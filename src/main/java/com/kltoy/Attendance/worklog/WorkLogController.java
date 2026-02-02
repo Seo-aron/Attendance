@@ -1,8 +1,12 @@
 package com.kltoy.Attendance.worklog;
 
+import com.kltoy.Attendance.employee.Employee;
+import com.kltoy.Attendance.employee.EmployeeRepository;
+import com.kltoy.Attendance.worklog.dto.WorkLogSaveRequestDto;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +20,7 @@ import java.util.List;
 public class WorkLogController {
 
     private final WorkLogRepository workLogRepository;
+    private final EmployeeRepository employeeRepository;
 
     @GetMapping("/list")
     public String worklogList(Model model, HttpSession session) {
@@ -34,10 +39,22 @@ public class WorkLogController {
     }
 
     @PostMapping("/save")
-    public String workSave(){
-        //TODO: 매개변수: dto, session
-        // dto파일 만들기
+    @Transactional
+    public String workSave(WorkLogSaveRequestDto dto, HttpSession session){
+        Long employeeId = (Long) session.getAttribute("loginSession");
 
-        return "redirectt:/worklog/list";
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new IllegalArgumentException("로그인 정보가 올바르지 않습니다."));
+
+        // 저장할 WorkLog 객체 만들기
+        WorkLog workLog = WorkLog.builder()
+                .employee(employee)
+                .workDate(dto.getWorkDate())
+                .content(dto.getContent())
+                .build();
+
+        WorkLog savedLog = workLogRepository.save(workLog);
+
+        return "redirect:/worklog/list";
     }
 }
