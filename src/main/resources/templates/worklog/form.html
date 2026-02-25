@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{main/mainLayout :: layout(~{::title}, ~{::div}, ~{::#worklog-css}, ~{})}">
+<head>
+    <meta charset="UTF-8">
+    <title>업무일지 작성</title>
+    <link rel="stylesheet" th:href="@{/css/worklog.css}" id="worklog-css">
+</head>
+<body>
+<div class="worklog-container">
+    <h1 th:text="${workLog != null} ? '업무일지 수정' : '업무일지 작성'">업무일지 작성</h1>
+
+    <form th:action="@{/worklog/save}" method="post" class="worklog-form">
+        <!-- 수정 시 필요한 ID (등록일 땐 null) -->
+        <input type="hidden" name="id" th:value="${workLog?.id}">
+
+        <div class="form-group">
+            <label for="workDate">근무일자</label>
+            <input type="date" id="workDate" name="workDate" required
+                   th:value="${workLog != null ? workLog.workDate : #temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}">
+        </div>
+
+        <div class="form-group">
+            <label for="content">업무내용</label>
+            <textarea id="content" name="content" rows="10" required
+                      placeholder="금일 진행한 업무 내용을 상세히 작성해주세요."
+                      th:text="${workLog?.content}"></textarea>
+        </div>
+
+        <div class="btn-group">
+            <button type="submit" class="submit-btn" th:text="${workLog != null} ? '수정하기' : '등록하기'">등록하기</button>
+            <a th:href="@{/worklog/list}" class="cancel-btn">취소</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>사원 등록</title>
+  <link rel="stylesheet" th:href="@{/css/join.css}">
+
+</head>
+<body>
+<div class="container">
+  <h1>사원 등록</h1>
+  <form th:action="@{/login/join}" method="post" th:object="${employeeJoinRequest}">
+
+    <div class="form-group">
+      <label for="name">이름</label>
+      <input type="text" id="name" th:field="*{name}" required>
+      <div class="error-message" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+    </div>
+
+    <div class="form-group">
+      <label for="password">비밀번호</label>
+      <input type="password" id="password" th:field="*{password}" required>
+      <div class="error-message" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+    </div>
+
+    <div class="form-group">
+      <label for="email">이메일</label>
+      <input type="email" id="email" th:field="*{email}" placeholder="admin@email.com" required>
+      <div class="error-message" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+    </div>
+
+    <div class="form-group">
+      <label for="phone">전화번호</label>
+      <input type="tel" id="phone" th:field="*{phone}" placeholder="010-1234-5678" required>
+      <div class="error-message" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
+    </div>
+
+    <div class="form-group">
+      <label for="department">부서</label>
+      <input type="text" id="department" th:field="*{department}" required>
+      <div class="error-message" th:if="${#fields.hasErrors('department')}" th:errors="*{department}"></div>
+    </div>
+
+    <div class="form-group">
+      <label for="position">직책</label>
+      <input type="text" id="position" th:field="*{position}" required>
+      <div class="error-message" th:if="${#fields.hasErrors('position')}" th:errors="*{position}"></div>
+    </div>
+
+    <div class="form-group">
+      <label for="hireDate">입사일</label>
+      <input type="date" id="hireDate" th:field="*{hireDate}" required>
+      <div class="error-message" th:if="${#fields.hasErrors('hireDate')}" th:errors="*{hireDate}"></div>
+    </div>
+
+    <button type="submit">등록하기</button>
+  </form>
+</div>
+</body>
+</html>
