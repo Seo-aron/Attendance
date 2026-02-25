@@ -54,7 +54,7 @@ public class WorkLogController {
                 .build();
 
         WorkLog savedLog = workLogRepository.save(workLog);
-        ㅇ
+
         return "redirect:/worklog/list";
     }
 }
