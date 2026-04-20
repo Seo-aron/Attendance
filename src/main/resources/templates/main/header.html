@@ -19,6 +19,11 @@
         </nav>
     </div>
     <div class="header-right">
+        <!-- 로그인 정보 표시 -->
+        <span th:if="${loginUser != null}"
+              th:text="${loginUser.name} + ' ' + ${loginUser.position}"
+              style="font-weight: bold; color: black; margin-right: 15px; font-size: 14px;">
+        </span>
         <a th:href="@{/login/logout}" class="logout-btn">로그아웃</a>
     </div>
 </header>

@@ -8,42 +8,95 @@
 </head>
 <body>
 <div class="worklog-container">
-  <h1>나의 업무일지</h1>
 
-  <table>
-    <thead>
-    <tr>
-      <th style="width: 10%;">번호</th> <th style="width: 15%;">근무일자</th>
-      <th style="width: 45%;">업무내용</th>
-      <th style="width: 15%;">결재상태</th>
-      <th style="width: 15%;">결재자</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:if="${workLogs.isEmpty()}">
-      <td colspan="5" style="text-align: center; padding: 30px;">작성된 업무일지가 없습니다.</td>
-    </tr>
+  <!-- ========================================== -->
+  <!-- 1. 일반 직원 화면 (isBoss == false) -->
+  <!-- ========================================== -->
+  <div th:if="${!isBoss}">
+    <h1>나의 업무일지</h1>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 20%;">근무일자</th>
+          <th style="width: 50%;">업무내용</th>
+          <th style="width: 15%;">결재상태</th>
+          <th style="width: 15%;">결재자</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:if="${workLogs.isEmpty()}">
+          <td colspan="4" style="text-align: center; padding: 30px;">작성된 업무일지가 없습니다.</td>
+        </tr>
+        <tr th:each="log : ${workLogs}">
+          <td th:text="${log.workDate}"></td>
+          <td class="content-cell" th:text="${log.content}"></td>
+          <td th:switch="${log.approvalStatus.name()}">
+            <span th:case="'PENDING'" class="status-badge status-pending">대기중</span>
+            <span th:case="'APPROVED'" class="status-badge status-approved">승인</span>
+            <span th:case="'REJECTED'" class="status-badge status-rejected">반려</span>
+          </td>
+          <td th:text="${log.approver != null ? log.approver.name : '-'}"></td>
+        </tr>
+      </tbody>
+    </table>
 
-    <tr th:each="log : ${workLogs}">
-      <td th:text="${log.id}"></td>
-      <td th:text="${log.workDate}"></td>
-
-      <td class="content-cell" th:text="${log.content}"></td>
-
-      <td th:switch="${log.approvalStatus.name()}">
-        <span th:case="'PENDING'" class="status-badge status-pending">대기중</span>
-        <span th:case="'APPROVED'" class="status-badge status-approved">승인</span>
-        <span th:case="'REJECTED'" class="status-badge status-rejected">반려</span>
-      </td>
-
-      <td th:text="${log.approver != null ? log.approver.name : '-'}"></td>
-    </tr>
-    </tbody>
-  </table>
-
-  <div class="write-btn-container">
-    <a th:href="@{/worklog/new}" class="write-btn">✏️ 업무일지 작성</a>
+    <div class="write-btn-container">
+      <a th:href="@{/worklog/new}" class="write-btn">✏️ 업무일지 작성</a>
+    </div>
   </div>
+
+  <!-- ========================================== -->
+  <!-- 2. 대표(사장님) 화면 (isBoss == true) -->
+  <!-- ========================================== -->
+  <div th:if="${isBoss}">
+    <h1>전체 직원 업무일지 결재</h1>
+
+    <!-- 직원(Employee)별로 반복하면서 섹션 생성 -->
+    <div th:each="entry : ${groupedWorkLogs}" class="employee-section" style="margin-bottom: 50px;">
+
+      <!-- 직원 이름 및 부서 표시 (예: 홍길동 (개발부 사원)) -->
+      <h3 th:text="${entry.key.name} + ' (' + ${entry.key.department} + ' ' + ${entry.key.position} + ')'"
+          style="border-bottom: 2px solid #007bff; padding-bottom: 10px; color: #0056b3;">
+      </h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 20%;">근무일자</th>
+            <th style="width: 50%;">업무내용</th>
+            <th style="width: 15%;">결재처리</th> <!-- 일반 직원의 결재상태 칸이 결재처리 칸으로 바뀜 -->
+            <th style="width: 15%;">결재자</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:if="${entry.value.isEmpty()}">
+            <td colspan="4" style="text-align: center; padding: 20px;">작성된 업무일지가 없습니다.</td>
+          </tr>
+
+          <tr th:each="log : ${entry.value}">
+            <td th:text="${log.workDate}"></td>
+            <td class="content-cell" th:text="${log.content}"></td>
+
+            <!-- 결재 상태 변경을 위한 셀렉트 박스 -->
+            <td>
+              <form th:action="@{/worklog/updateStatus}" method="post" style="margin: 0;">
+                <input type="hidden" name="logId" th:value="${log.id}">
+                <select name="status" onchange="this.form.submit()"
+                        style="padding: 5px; border-radius: 4px; border: 1px solid #ccc;">
+                  <option value="PENDING" th:selected="${log.approvalStatus.name() == 'PENDING'}">대기중</option>
+                  <option value="APPROVED" th:selected="${log.approvalStatus.name() == 'APPROVED'}">승인</option>
+                  <option value="REJECTED" th:selected="${log.approvalStatus.name() == 'REJECTED'}">반려</option>
+                </select>
+              </form>
+            </td>
+
+            <td th:text="${log.approver != null ? log.approver.name : '-'}"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
 </div>
 </body>
 </html>
