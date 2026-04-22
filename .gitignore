@@ -1,1 +1,28 @@
-/out/
+### IntelliJ IDEA (IDE 설정 파일 무시) ###
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+### Gradle (빌드 캐시 및 결과물 무시) ###
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+### OS Files (맥/윈도우 시스템 파일 무시) ###
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+$RECYCLE.BIN/
+
+### Java / Spring Boot (로그 및 컴파일된 파일 무시) ###
+*.class
+*.log
+*.jar
+*.war
+hs_err_pid*

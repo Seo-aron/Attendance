@@ -18,7 +18,7 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
 
     @Transactional
-    public void join(EmployeeJoinRequestDto dto) {
+    public String join(EmployeeJoinRequestDto dto) {
         //새로운 사원 생성
         String newEmpNo = createEmpNo();
 
@@ -36,6 +36,7 @@ public class EmployeeService {
                 .build();
 
         employeeRepository.save(employee);
+        return newEmpNo;
     }
 
     @Transactional

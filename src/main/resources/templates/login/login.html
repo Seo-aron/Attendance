@@ -34,5 +34,11 @@
     +]*/
 </script>
 
+<script th:if="${joinSuccessMessage}" th:inline="javascript">
+    /*[+
+        alert([[${joinSuccessMessage}]]);
+    +]*/
+</script>
+
 </body>
 </html>

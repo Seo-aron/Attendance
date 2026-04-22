@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/login")
@@ -55,19 +56,28 @@ public class LoginController {
 
     @GetMapping("/join")
     public String employeeJoin(Model model) {
-        model.addAttribute("employeeJoinRequest", new EmployeeJoinRequestDto());
+        // 생성될 사번을 미리 가져와서 모델에 담습니다.
+        String expectedEmpNo = employeeService.createEmpNo();
+        EmployeeJoinRequestDto dto = new EmployeeJoinRequestDto();
+        dto.setEmpNo(expectedEmpNo); // DTO에 사번 설정
+        
+        model.addAttribute("employeeJoinRequest", dto);
+        model.addAttribute("expectedEmpNo", expectedEmpNo);
 
         return "login/join";
     }
 
     @PostMapping("/join")
-    public String joinProcess(@Valid EmployeeJoinRequestDto dto, BindingResult bindingResult) {
+    public String joinProcess(@Valid EmployeeJoinRequestDto dto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return "login/join";
         }
-        employeeService.join(dto);
+        String newEmpNo = employeeService.join(dto);
+        
+        // 타임리프 inline 자바스크립트에서 자동으로 문자열 이스케이프 처리를 해주기 때문에 단일 \n으로 변경합니다.
+        redirectAttributes.addFlashAttribute("joinSuccessMessage", "회원가입이 완료되었습니다.\n귀하의 사번은 [" + newEmpNo + "] 입니다.");
 
-        return "redirect:/";
+        return "redirect:/login/login";
     }
 
 }

@@ -15,6 +15,8 @@ import lombok.Setter;
 @Setter
 public class EmployeeJoinRequestDto {
 
+    private String empNo; // 화면에 보여주기 위한 사번 (저장 시에는 다시 생성됨)
+
     @NotBlank(message = "이름은 필수 입력 값 입니다.")
     private String name;
 

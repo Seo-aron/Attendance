@@ -79,7 +79,7 @@ public class WorkLogController {
     @PostMapping("/updateStatus")
     @Transactional
     public String updateStatus(@RequestParam("logId") Long logId, 
-                               @RequestParam("status") String status, 
+                               @RequestParam("approvalStatus") String status,
                                @ModelAttribute("loginUser") Employee approver) {
         
         // 1. 상태를 변경할 업무일지(WorkLog) 조회

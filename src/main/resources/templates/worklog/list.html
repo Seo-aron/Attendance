@@ -81,7 +81,7 @@
             <td>
               <form th:action="@{/worklog/updateStatus}" method="post" style="margin: 0;">
                 <input type="hidden" name="logId" th:value="${log.id}">
-                <select name="status" onchange="this.form.submit()"
+                <select name="approvalStatus" onchange="this.form.submit()"
                         style="padding: 5px; border-radius: 4px; border: 1px solid #ccc;">
                   <option value="PENDING" th:selected="${log.approvalStatus.name() == 'PENDING'}">대기중</option>
                   <option value="APPROVED" th:selected="${log.approvalStatus.name() == 'APPROVED'}">승인</option>
