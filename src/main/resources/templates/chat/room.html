@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{main/mainLayout :: layout(~{::title}, ~{::div.chat-layout-container}, ~{::#chat-css}, ~{::#chat-js})}">
+<head>
+    <meta charset="UTF-8">
+    <title>사내 채팅</title>
+    <link rel="stylesheet" th:href="@{/css/chat.css}" id="chat-css">
+</head>
+<body>
+
+<div class="chat-layout-container">
+    <!-- 왼쪽: 채팅방 목록 -->
+    <div class="chat-sidebar">
+        <div class="sidebar-header">
+            <h2>채팅 목록</h2>
+        </div>
+        <ul class="chat-room-list">
+            <li class="chat-room-item active" data-room-id="general">
+                <div class="room-info">
+                    <div class="room-name">💬 사내채팅방</div>
+                    <div class="last-message">자유롭게 대화하세요.</div>
+                </div>
+            </li>
+            <!-- 다른 채팅방들 추가 (현재는 단일 채팅방이므로 제거) -->
+        </ul>
+    </div>
+
+    <!-- 오른쪽: 실제 채팅창 -->
+    <div class="chat-main">
+        <div class="chat-header">
+            <h3 id="current-room-name">💬 사내채팅방</h3>
+        </div>
+        <div class="chat-messages" id="message-area">
+            <!-- 더미 메시지 삭제됨. 새 메시지가 여기에 추가됩니다. -->
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="message-input" placeholder="메시지를 입력하세요...">
+            <button id="send-button">전송</button>
+        </div>
+    </div>
+</div>
+
+<!-- loginUser 객체가 있을 경우에만 스크립트 실행 -->
+<script id="chat-js" th:if="${loginUser != null}">
+    document.addEventListener("DOMContentLoaded", function() {
+        const messageInput = document.getElementById("message-input");
+        const sendButton = document.getElementById("send-button");
+        const messageArea = document.getElementById("message-area");
+
+        // 현재 로그인한 사용자 정보 (타임리프에서 loginUser 객체를 통해 받아옴)
+        const loginUser = {
+            name: "[[${loginUser.name}]]",
+            position: "[[${loginUser.position}]]"
+        };
+
+        // 웹소켓 연결
+        const socket = new WebSocket("ws://" + location.host + "/ws/chat");
+
+        // 1. 메시지 수신 처리
+        socket.onmessage = function(event) {
+            const msg = JSON.parse(event.data); // JSON 형식의 메시지를 객체로 변환
+
+            const messageItem = document.createElement("div");
+            messageItem.classList.add("message-item");
+
+            // 내가 보낸 메시지인지, 다른 사람이 보낸 메시지인지 구분
+            if (msg.senderName === loginUser.name) {
+                messageItem.classList.add("mine");
+                messageItem.innerHTML = `
+                    <div class="message-content">
+                         <div class="message-bubble">
+                            <p>${msg.content}</p>
+                            <span class="message-time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                        </div>
+                    </div>`;
+            } else {
+                messageItem.classList.add("other");
+                messageItem.innerHTML = `
+                    <div class="message-content">
+                        <div class="message-sender">${msg.senderName}</div>
+                        <div class="message-bubble">
+                            <p>${msg.content}</p>
+                            <span class="message-time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                        </div>
+                    </div>`;
+            }
+            messageArea.appendChild(messageItem);
+            // 새 메시지가 오면 스크롤을 맨 아래로
+            messageArea.scrollTop = messageArea.scrollHeight;
+        };
+
+        // 2. 메시지 발신 처리
+        function sendMessage() {
+            const messageText = messageInput.value.trim();
+            if (messageText !== "") {
+                // 서버로 보낼 메시지를 JSON 형식으로 구성
+                const messagePayload = {
+                    senderName: loginUser.name,
+                    content: messageText
+                };
+                socket.send(JSON.stringify(messagePayload));
+                messageInput.value = "";
+                messageInput.focus();
+            }
+        }
+
+        sendButton.addEventListener("click", sendMessage);
+        messageInput.addEventListener("keypress", function(e) {
+            if (e.key === "Enter") {
+                sendMessage();
+            }
+        });
+
+        // 3. 웹소켓 연결/종료 로그
+        socket.onopen = () => console.log("웹소켓 서버에 연결되었습니다.");
+        socket.onclose = () => console.log("웹소켓 서버와 연결이 종료되었습니다.");
+        socket.onerror = (error) => console.error("웹소켓 에러 발생:", error);
+    });
+</script>
+
+</body>
+</html>
