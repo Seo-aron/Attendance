@@ -26,3 +26,5 @@ $RECYCLE.BIN/
 *.jar
 *.war
 hs_err_pid*
+
+.idea/
