@@ -15,8 +15,5 @@ spring:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL8Dialect
 
-  thymeleaf:
-    cache: false # 개발 중에는 타임리프 캐시를 꺼야 HTML 수정 시 바로 반영됩니다.
-
 server:
   port: 8080
